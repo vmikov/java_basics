@@ -1,8 +1,14 @@
-package hw_13.entities;
+package hw_15.model;
 
+import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
+@Table(name = "statuses", schema = "javaelementary")
 public class Status {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String alias;
     private String description;
@@ -17,6 +23,9 @@ public class Status {
         this(alias, description);
         this.id = id;
     }
+
+    @ManyToMany(mappedBy = "statuses")
+    private Set<Client> clients;
 
     public int getId() {
         return id;

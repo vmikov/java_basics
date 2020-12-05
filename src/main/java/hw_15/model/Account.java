@@ -1,13 +1,29 @@
-package hw_13.entities;
+package hw_15.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
+@Table(name="Accounts", schema = "javaelementary")
 public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String number;
     private BigDecimal value;
-    private int clientId;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
     public int getId() {
         return id;
@@ -35,14 +51,14 @@ public class Account {
 
     public Account() {}
 
-    public Account(int clientId, String number, BigDecimal value) {
-        this.clientId = clientId;
+    public Account(Client client, String number, BigDecimal value) {
+        this.client = client;
         this.number = number;
         this.value = value;
     }
 
-    public Account(int id, int clientId, String number, BigDecimal value) {
-        this(clientId, number, value);
+    public Account(int id, Client client, String number, BigDecimal value) {
+        this(client, number, value);
         this.id = id;
     }
 
@@ -51,7 +67,7 @@ public class Account {
         return getClass().getSimpleName() +
                 "{" +
                 "id=" + id +
-                ", clientId=" + clientId +
+                ", client=" + client +
                 ", number=" + number +
                 ", value=" + value +
                 "}";
@@ -59,7 +75,7 @@ public class Account {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, clientId, number, value);
+        return Objects.hash(id, client.getId(), number, value);
     }
 
     @Override
@@ -70,18 +86,10 @@ public class Account {
 
         Account other = (Account) obj;
         return id == other.id &&
-                clientId == other.clientId &&
+                client.getId() == other.getId() &&
                 (number == null && other.number == null ||
                         number != null && other.number != null && number.equals(other.number)) &&
                 (value == null && other.value == null ||
                         value != null && other.value != null && value.equals(other.value));
-    }
-
-    public int getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
     }
 }
