@@ -3,45 +3,79 @@ package hw_15.services;
 import hw_15.dao.StatusDao;
 import hw_15.dao.StatusDaoImpl;
 import hw_15.model.Status;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 
 public class StatusServiceImpl implements StatusService {
-    @Override
-    public Status getById(int id) {
-        StatusDao dao = new StatusDaoImpl();
+    Logger logger = Logger.getLogger(StatusServiceImpl.class);
 
-        return dao.getById(id);
+    @Override
+    public Status getById (int id) {
+        logger.debug("StatusServiceImpl.getById(int id) method invoked with parameters: id = " + id);
+
+        StatusDao dao = new StatusDaoImpl();
+        Status status = null;
+
+        try {
+            status = dao.getById(id);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
+
+        return status;
     }
 
     @Override
-    public void save(Status status) {
+    public void save (Status status) {
+        logger.debug("StatusServiceImpl.save(Status status) method invoked with parameters: status = " + status);
+
         if(status == null) {
-            System.out.println("Status is null");
+            logger.error("no status to save in the method StatusServiceImpl.save(Status status): status = null");
             return;
         }
 
         StatusDao dao = new StatusDaoImpl();
-        dao.save(status);
+
+        try {
+            dao.save(status);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
     }
 
     @Override
     public void update(Status status) {
+        logger.debug("StatusServiceImpl.update(Status status) method invoked with parameters: status = " + status);
+
         if(status == null) {
-            System.out.println("Status is null");
+            logger.error("no status to update in the method StatusServiceImpl.update(Status status): status = null");
             return;
         }
 
         StatusDao dao = new StatusDaoImpl();
-        dao.update(status);
+
+        try {
+            dao.update(status);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
     }
 
     @Override
     public void delete(Status status) {
+        logger.debug("StatusServiceImpl.delete(Status status) method invoked with parameters: status = " + status);
+
         if(status == null) {
-            System.out.println("Status is null");
+            logger.error("no status to delete in the method StatusServiceImpl.delete(Status status): status = null");
             return;
         }
 
         StatusDao dao = new StatusDaoImpl();
-        dao.delete(status);
+
+        try {
+            dao.delete(status);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
     }
 }
