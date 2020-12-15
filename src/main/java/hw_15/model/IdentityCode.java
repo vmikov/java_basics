@@ -1,7 +1,6 @@
 package hw_15.model;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "identity_codes")
