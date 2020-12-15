@@ -4,12 +4,14 @@ import hw_15.model.Account;
 import hw_15.model.Client;
 import hw_15.model.IdentityCode;
 import hw_15.model.Status;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
+    static Logger logger = Logger.getLogger(HibernateUtil.class);
     private static SessionFactory sessionFactory;
 
     public static SessionFactory getSessionFactory() {
@@ -23,7 +25,7 @@ public class HibernateUtil {
                 StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties());
                 sessionFactory = cfg.buildSessionFactory(registryBuilder.build());
             } catch (HibernateException e) {
-                System.out.println(e.getMessage());
+                logger.error(e.getMessage());
             }
         }
         return sessionFactory;
