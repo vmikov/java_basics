@@ -1,110 +1,69 @@
-import hw_18.utils.ShufflingUpperStrPipe;
-import hw_18.utils.SimpleLowerStrPipe;
-import hw_18.utils.helpers.EmailHelper;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
+        //1
+        Stream.empty().filter(Objects::nonNull).map(item -> {
+            String s = item.toString();
+
+            return s.length() + ":" + s;
+        }).forEach(System.out::println);
+
+        //2
+        Arrays.asList(65, 2, 5, 87, 12, 34, 0, -1, 17, 100)
+                        .stream()
+                        .filter(item -> item > 0)
+                        .limit(3)
+                        .collect(Collectors.toSet());
+
+        //3
+        "Lorem ipsum dolor sit amet"
+                .chars()
+                .distinct()
+                .mapToObj(i -> String.valueOf((char)i))
+                .collect(Collectors.toSet())
+                .stream()
+                .collect(Collectors.toList());
+
         //4
-        String testStr = "Vasya";
-        SimpleLowerStrPipe simpleLowerStrPipe = new SimpleLowerStrPipe(testStr);
+        List<String> src = Arrays.asList("Lorem ipsum dolor sit amet".split(" "));
+        Map<Integer, String> map4 = src.stream().collect(Collectors.toMap(s -> src.indexOf(s), s -> s));
+        Collection<String> values = new ArrayList<>(map4.size());
 
-        System.out.println(simpleLowerStrPipe.getSimpleString());
-        System.out.println(simpleLowerStrPipe.getLowerString());
-        System.out.println(simpleLowerStrPipe.get("Petya"));
-        System.out.println(simpleLowerStrPipe.getSimpleBoolean());
-        System.out.println(simpleLowerStrPipe.getLowerBoolean());
-
-        simpleLowerStrPipe.setStr("");
-        System.out.println(simpleLowerStrPipe.getSimpleBoolean());
-        System.out.println(simpleLowerStrPipe.getLowerBoolean());
-
-        ShufflingUpperStrPipe shufflingUpperStrPipe = new ShufflingUpperStrPipe(testStr);
-
-        System.out.println(shufflingUpperStrPipe.getShuffledString());
-        System.out.println(shufflingUpperStrPipe.getUpperString());
-        System.out.println(shufflingUpperStrPipe.get("Petya"));
-        System.out.println(shufflingUpperStrPipe.getShuffledBoolean());
-        System.out.println(shufflingUpperStrPipe.getUpperBoolean());
-
-        shufflingUpperStrPipe.setStr("");
-        System.out.println(shufflingUpperStrPipe.getShuffledBoolean());
-        System.out.println(shufflingUpperStrPipe.getUpperBoolean());
-
-        shufflingUpperStrPipe.setStr(null);
-        System.out.println(shufflingUpperStrPipe.getShuffledString());
-        System.out.println(shufflingUpperStrPipe.getUpperString());
-        System.out.println(shufflingUpperStrPipe.getShuffledBoolean());
-        System.out.println(shufflingUpperStrPipe.getUpperBoolean());
+        map4.keySet().forEach(key -> {
+            System.out.println(key);
+            values.add(map4.get(key));
+        });
 
         //5
-        Optional<String> emailOptional = EmailHelper.check("vasya@vas.net");
+        List.of("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+                .stream()
+                .skip(1)
+                .limit(8)
+                .map(Integer::valueOf)
+                .filter(x -> x%2 == 0)
+                .collect(Collectors.toSet());
 
-        try {
-            //6
-            emailOptional.ifPresentOrElse(System.out::println, () -> { throw new NoSuchElementException("No valid email"); });
+        //6
+        Random random = new Random(System.currentTimeMillis());
+        Stream.iterate(1, x -> random.nextInt(1000))
+                .limit(100)
+                .parallel()
+                .sorted()
+                .filter(x -> x%2 != 0 && x > 50)
+                .findFirst();
 
-            emailOptional = EmailHelper.check(null);
-            //7
-            emailOptional.ifPresentOrElse(System.out::println, () -> { throw new NoSuchElementException("No valid email"); });
-        } catch (NoSuchElementException e) {
-            System.out.println(e.getMessage());
-        }
-
-        Main app = new Main();
-        //8.1
-        System.out.printf("Checking salary of %.2f: %b%n", 2000.d, app.predicateExample(new BigDecimal(2000)));
-        System.out.printf("Checking salary of %.2f: %b%n", 1000.d, app.predicateExample(new BigDecimal(1000)));
-        //8.2
-        app.consumerExample("Hello, Functional Programming!!!");
-        //8.3
-        System.out.println(app.functionExample(5));
-        //8.4
-        System.out.println(app.supplierExample());
-    }
-
-    //8.1
-    public boolean predicateExample(BigDecimal salary) {
-        Predicate<BigDecimal> salaryChecker = value -> value.compareTo(new BigDecimal(1500)) > 0;
-
-        return salaryChecker.test(salary);
-    }
-
-    //8.2
-    public void consumerExample(String input) {
-        Consumer<String> consumer = value -> {
-            for(char ch: value.toCharArray()) {
-                System.out.print(ch);
-            }
-            System.out.println();
-        };
-
-        consumer.accept(input);
-    }
-
-    //8.3
-    public String functionExample(int number) {
-        Function<Integer, String> function = key -> {
-            String[] values = new String[] {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
-
-            return key > 0 && key < 11 ? values[key - 1] : "unknown";
-        };
-
-        return function.apply(number);
-    }
-
-    //8.4
-    public String supplierExample() {
-        Supplier<String> supplier = () -> "Today is " + LocalDate.now().toString();
-
-        return supplier.get();
+        //7;
+        Arrays.stream("Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi delectus libero reprehenderit numquam cupiditate laboriosam commodi tenetur alias non aliquam."
+                .split("[., ]"))
+                .filter(s -> !s.isEmpty())
+                .map(String::length)
+                .map(random::nextInt)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toCollection(ArrayList::new))
+                .forEach(System.out::println);
     }
 }
