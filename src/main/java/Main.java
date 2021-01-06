@@ -30,12 +30,7 @@ public class Main {
         //4
         List<String> src = Arrays.asList("Lorem ipsum dolor sit amet".split(" "));
         Map<Integer, String> map4 = src.stream().collect(Collectors.toMap(s -> src.indexOf(s), s -> s));
-        Collection<String> values = new ArrayList<>(map4.size());
-
-        map4.keySet().forEach(key -> {
-            System.out.println(key);
-            values.add(map4.get(key));
-        });
+        map4.keySet().stream().map(map4::get).peek(System.out::println).collect(Collectors.toList());
 
         //5
         List.of("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
