@@ -31,7 +31,6 @@ public class Main {
         List<String> src = Arrays.asList("Lorem ipsum dolor sit amet".split(" "));
         Map<Integer, String> map4 = src.stream().collect(Collectors.toMap(s -> src.indexOf(s), s -> s));
         map4.keySet().stream().map(map4::get).peek(System.out::println).collect(Collectors.toList());
-        //map4.entrySet().stream().peek(e -> System.out.println(e.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 
         //5
         Set<Integer> set5 = List.of("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
