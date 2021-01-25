@@ -18,10 +18,5 @@ public class CollaborationManager {
                 .stream(collaborators)
                 .map(CounterCollaborator::getCollaboratorState)
                 .reduce((a,s) -> String.join(", ", a, s)));
-
-        /*System.out.println(Arrays
-                .stream(collaborators)
-                .map(CounterCollaborator::getCollaboratorState)
-                .collect(Collectors.toSet()).stream().reduce((a, c) -> a + ", " + c));*/
     }
 }

@@ -7,8 +7,4 @@ public class Counter {
         System.out.printf("%s: %d%n", Thread.currentThread().getName(), counter);
         return ++counter;
     }
-
-    public static synchronized int getValue () {
-        return counter;
-    }
 }

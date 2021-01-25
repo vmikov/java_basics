@@ -41,9 +41,9 @@ public class Main {
         // c синхронизацией в методе дополнительного класса c ожиданием в родительском потоке завершения дочерних:
         // по потокам - (2978-3000), финальное - (3000-3000)
 
-        System.out.printf("%nMain is done with Counter's value %d%n", Counter.getValue());
+        System.out.printf("%nMain is done%n");
 
-        //Для образования deadlock-а нужно в классах ThreadInherited, RunnableImplemented и CallableImplemented
-        //раскомментировать вызов метода displayCollaboration();
+        //Для образования deadlock-а нужно как минимум в двух из классов ThreadInherited, RunnableImplemented и CallableImplemented
+        //раскомментировать вызов метода displayCollaboration() и включить синхронизацию метода в дополнительном классе;
     }
 }
