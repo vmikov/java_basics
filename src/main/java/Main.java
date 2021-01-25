@@ -9,9 +9,9 @@ public class Main {
         CounterCollaborator[] collaborators = new CounterCollaborator[] {new ThreadInherited(), new RunnableImplemented(), new CallableImplemented()};
         CollaborationManager.setCollaborators(collaborators);
 
-        var thread1 = (ThreadInherited)collaborators[0];
-        var thread2 = new Thread((RunnableImplemented)collaborators[1]);
-        var thread3 = new Thread(new FutureTask<>((CallableImplemented)collaborators[2]));
+        Thread thread1 = (ThreadInherited)collaborators[0];
+        Thread thread2 = new Thread((RunnableImplemented)collaborators[1]);
+        Thread thread3 = new Thread(new FutureTask<>((CallableImplemented)collaborators[2]));
 
         thread1.start();
         thread2.start();
@@ -44,6 +44,6 @@ public class Main {
         System.out.printf("%nMain is done%n");
 
         //Для образования deadlock-а нужно как минимум в двух из классов ThreadInherited, RunnableImplemented и CallableImplemented
-        //раскомментировать вызов метода displayCollaboration() и включить синхронизацию метода в дополнительном классе;
+        //раскомментировать вызов метода displayCollaboration() и включить синхронизацию метода в дополнительном классе Counter;
     }
 }
